@@ -1,0 +1,36 @@
+#!/bin/bash
+mkdir /docker
+mkdir -p /docker/mysql/ && mkdir -p /docker/wordpress/ && mkdir -p /docker/phpfpm/app && mkdir -p /docker/phpfpm/config && mkdir -p /docker/nginx/config && cd .
+z=`pwd`
+
+cp startdb.sh /docker/mysql
+cp mysql_Dockerfile /docker/mysql/Dockerfile
+
+cp wordpress_Dockerfile /docker/wordpress/Dockerfile
+cp wordpress_run.sh /docker/wordpress/run.sh
+
+cp php-fpm.conf /docker/phpfpm/config/
+cp www.conf /docker/phpfpm/config/
+cp php_Dockerfile /docker/phpfpm/Dockerfile
+cp php_run.sh /docker/phpfpm/run.sh
+
+cp nginx.conf /docker/nginx/config/
+cp default.conf /docker/nginx/config/
+cp nginx_Dockerfile /docker/nginx/Dockerfile
+
+
+cd /docker/mysql
+docker build -t amira_mysql .
+
+cd /docker/wordpress
+docker build -t amira_downloader .
+
+cd /docker/phpfpm/
+docker build -t amira_phpfpm .
+
+cd /docker/nginx/
+docker build -t amira_nginx .
+
+rm -r /docker
+
+cd $z

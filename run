@@ -1,0 +1,6 @@
+#!/bin/bash
+docker run -d  --name mysql amira_mysql
+docker run -i -t  --name downloader amira_downloader
+docker run -d  --name app1 --volumes-from downloader --link mysql:db amira_phpfpm
+docker run -d  --name app2 --volumes-from downloader --link mysql:db amira_phpfpm
+docker run -d -p 8060:80 --name nginx --volumes-from downloader --link app1:app1 --link app2:app2 amira_nginx
